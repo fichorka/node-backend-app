@@ -2,11 +2,13 @@ import express from "express";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
+  const user = await req.app.locals.db.users.findOne();
+  console.log(user.username);
   res.render("layout", {
     page: "profilePartial",
     info: {
-      username: "FiloBilo",
+      username: user.username,
       accountDate: "Sep 20",
     },
   });

@@ -5,10 +5,14 @@ import indexRouter from "./routes/indexRouter";
 import loginRouter from "./routes/loginRouter";
 import registerRouter from "./routes/registerRouter";
 import profileRouter from "./routes/profileRouter";
+import database from "./middleware/database";
 
 const { PORT } = process.env;
 
 const app = express();
+
+// middleware
+app.use(database);
 
 app.set("view engine", "ejs");
 app.set("views", "views");
