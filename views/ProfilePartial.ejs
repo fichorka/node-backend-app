@@ -1,7 +1,10 @@
 <h1>Profile</h1>
 <p for="username">Username: <%- username %></p>
 <p for="username">Account created at: <%- accountDate %></p>
+<div class="interactive-block">
+<a class="interactive" href=<%-`/user/${username}/edit`%>>Edit username</a>
+</div>
 <form method="POST" action="">
-  <input type="submit" value="Delete account" />
+  <input class="interactive" type="submit" value="Delete account" />
 </form>
 <a class="nav-link" href="/">Home</a>

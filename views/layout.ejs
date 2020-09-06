@@ -35,7 +35,7 @@
         width: 5rem;
         text-align: right;
       }
-      input {
+      .interactive {
         font-size: 0.85rem;
         line-height: 1.3em;
         background: none;
@@ -45,12 +45,16 @@
         background: lightgray;
         border-radius: 0.2rem;
         width: 10rem;
+        box-sizing: border-box
       }
-      .input-block {
+      .interactive-block {
         margin: 1rem 0;
       }
-      input[type="submit"] {
+      .interactive[type="submit"], a.interactive {
         width: 16rem;
+        display: inline-block;
+        color: black;
+        text-align: center;
       }
     </style>
   </head>

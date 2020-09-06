@@ -37,6 +37,8 @@ app.use("/logout", logoutRouter);
 app.use("/register", registerRouter);
 app.use("/user/", profileRouter);
 
-app.listen(3001, () => {
+app.use(profileRouter);
+
+app.listen(PORT, () => {
   console.log(`Listening on http://localhost:${PORT}`);
 });

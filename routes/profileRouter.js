@@ -1,5 +1,9 @@
 import express from "express";
-import session from "express-session";
+import bcrypt from "bcrypt";
+
+import isUsernameValid from "../utils/isUsernameValid";
+import findUser from "../utils/findUser";
+import isPasswordValid from "../utils/isPasswordValid";
 
 const router = express.Router();
 
@@ -44,8 +48,71 @@ router.get("/:username", async (req, res) => {
   }
 });
 
+router.get("/:username/edit", async (req, res) => {
+  const { username } = req.params;
+  if (username && username === req.app.locals.user.username) {
+    res.render("layout", { page: "editPartial", pageProps: { username } });
+  } else {
+    res.status(401).render("layout", {
+      page: "messagePartial",
+      pageProps: {
+        message: "Unauthorized.",
+      },
+    });
+  }
+});
+
+router.post("/:username/edit", async (req, res) => {
+  const { username } = req.params;
+  const { username: newUsername, password: newPassword } = req.body;
+
+  console.log(newUsername);
+  if (
+    newUsername &&
+    !(await findUser(req.app.locals.db.users, newUsername)) &&
+    isUsernameValid(newUsername) &&
+    username === req.app.locals.user.username
+  ) {
+    await req.app.locals.db.users
+      .updateOne({ username }, { $set: { username: newUsername } })
+      .catch((err) => {
+        throw err;
+      });
+    const user = await findUser(req.app.locals.db.users, newUsername).catch(
+      (err) => {
+        throw err;
+      }
+    );
+    req.session.user.username = user.username;
+    res.redirect(`/user/${newUsername}`);
+  } else if (
+    newPassword &&
+    isPasswordValid(newPassword) &&
+    username === req.app.locals.user.username
+  ) {
+    console.log(newPassword);
+    const hashedPassword = await bcrypt.hash(newPassword, 10).catch((err) => {
+      throw err;
+    });
+    await req.app.locals.db.users
+      .updateOne({ username }, { $set: { hashedPassword } })
+      .catch((err) => {
+        throw err;
+      });
+    res.redirect(`/user/${username}`);
+  } else {
+    res.status(401).render("layout", {
+      page: "messagePartial",
+      pageProps: {
+        message: "Unauthorized.",
+      },
+    });
+  }
+});
+
 router.post("/:username", async (req, res) => {
   const { username } = req.params;
+  const body = req.body;
   if (username && username === req.app.locals.user.username) {
     await req.app.locals.db.users.deleteOne({ username }).catch((err) => {
       throw err;
