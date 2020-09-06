@@ -22,7 +22,7 @@ router.get("/:username", async (req, res) => {
   }, 3000);
 
   const { username } = req.params;
-  if (username && username === req.app.locals.user.username) {
+  if (username && username === req.session.username) {
     const user = await req.app.locals.db.users
       .findOne({ username })
       .catch((err) => {
@@ -33,7 +33,7 @@ router.get("/:username", async (req, res) => {
       res.render("layout", {
         page: "profilePartial",
         pageProps: {
-          username: req.app.locals.user.username,
+          username: req.session.username,
           accountDate: "Sep 20",
         },
       });
@@ -57,7 +57,7 @@ router.get("/:username", async (req, res) => {
 
 router.get("/:username/edit", async (req, res) => {
   const { username } = req.params;
-  if (username && username === req.app.locals.user.username) {
+  if (username && username === req.session.username) {
     res.render("layout", { page: "editPartial", pageProps: { username } });
   } else {
     res.status(401).render("layout", {
@@ -77,7 +77,7 @@ router.post("/:username/edit", async (req, res) => {
     newUsername &&
     !(await findUser(req.app.locals.db.users, newUsername)) &&
     isUsernameValid(newUsername) &&
-    username === req.app.locals.user.username
+    username === req.session.username
   ) {
     await req.app.locals.db.users
       .updateOne({ username }, { $set: { username: newUsername } })
@@ -89,12 +89,12 @@ router.post("/:username/edit", async (req, res) => {
         throw err;
       }
     );
-    req.session.user.username = user.username;
+    req.session.username = user.username;
     res.redirect(`/users/${newUsername}`);
   } else if (
     newPassword &&
     isPasswordValid(newPassword) &&
-    username === req.app.locals.user.username
+    username === req.session.username
   ) {
     const hashedPassword = await bcrypt.hash(newPassword, 10).catch((err) => {
       throw err;
@@ -119,7 +119,7 @@ router.post("/:username/edit", async (req, res) => {
 router.post("/:username", async (req, res) => {
   const { username } = req.params;
   const body = req.body;
-  if (username && username === req.app.locals.user.username) {
+  if (username && username === req.session.username) {
     await req.app.locals.db.users.deleteOne({ username }).catch((err) => {
       throw err;
     });

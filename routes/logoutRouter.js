@@ -4,7 +4,7 @@ import authenticateUser from "../middleware/authenticateUser";
 const router = express.Router();
 
 router.use((req, res, next) => {
-  if (!req.app.locals.user.username) res.redirect("/");
+  if (!req.session.username) res.redirect("/");
   else next();
 });
 

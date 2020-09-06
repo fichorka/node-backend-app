@@ -11,7 +11,7 @@ export default async function authenticateUser(req, res, next) {
       dbUser.hashedPassword
     );
     if (isPasswordCorrect) {
-      req.session.user = { username: dbUser.username };
+      req.session.username = dbUser.username;
       res.redirect("/");
       // res.send("Ok");
     } else {

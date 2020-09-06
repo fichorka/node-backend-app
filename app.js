@@ -10,12 +10,15 @@ import registerRouter from "./routes/registerRouter";
 import usersRouter from "./routes/usersRouter";
 import database from "./middleware/database";
 import authenticateUser from "./middleware/authenticateUser";
-import authorizeUser from "./middleware/authorizeUser";
 import errorHandler from "./middleware/errorHandler";
 
 const { PORT } = process.env;
 
 const app = express();
+
+// settings
+app.set("view engine", "ejs");
+app.set("views", "views");
 
 // middleware
 app.use(database);
@@ -27,11 +30,8 @@ app.use(
     saveUninitialized: false,
   })
 );
-app.use(authorizeUser);
 
-app.set("view engine", "ejs");
-app.set("views", "views");
-
+// routes
 app.use("/", indexRouter);
 app.use("/login", loginRouter);
 app.use("/logout", logoutRouter);
