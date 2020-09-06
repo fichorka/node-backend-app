@@ -12,6 +12,7 @@ export default async function authenticateUser(req, res, next) {
     );
     if (isPasswordCorrect) {
       req.session.username = dbUser.username;
+      req.session.dateCreated = dbUser.dateCreated;
       res.redirect("/");
       // res.send("Ok");
     } else {

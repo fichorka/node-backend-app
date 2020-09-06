@@ -33,7 +33,7 @@ export default async function registerUser(req, res, next) {
   if (!error) {
     const hashedPassword = await bcrypt.hash(password, 10);
     await usersCollection
-      .insertOne({ username, hashedPassword })
+      .insertOne({ username, hashedPassword, dateCreated: Date() })
       .then((res) => {
         status = 201;
         message = `Registration Successfull. User ${username} created.`;

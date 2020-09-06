@@ -34,7 +34,7 @@ router.get("/:username", async (req, res) => {
         page: "profilePartial",
         pageProps: {
           username: req.session.username,
-          accountDate: "Sep 20",
+          dateCreated: req.session.dateCreated,
         },
       });
     } else {
