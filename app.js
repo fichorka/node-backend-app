@@ -7,10 +7,11 @@ import indexRouter from "./routes/indexRouter";
 import loginRouter from "./routes/loginRouter";
 import logoutRouter from "./routes/logoutRouter";
 import registerRouter from "./routes/registerRouter";
-import profileRouter from "./routes/profileRouter";
+import usersRouter from "./routes/usersRouter";
 import database from "./middleware/database";
 import authenticateUser from "./middleware/authenticateUser";
 import authorizeUser from "./middleware/authorizeUser";
+import errorHandler from "./middleware/errorHandler";
 
 const { PORT } = process.env;
 
@@ -35,9 +36,9 @@ app.use("/", indexRouter);
 app.use("/login", loginRouter);
 app.use("/logout", logoutRouter);
 app.use("/register", registerRouter);
-app.use("/user/", profileRouter);
+app.use("/users/", usersRouter);
 
-app.use(profileRouter);
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Listening on http://localhost:${PORT}`);

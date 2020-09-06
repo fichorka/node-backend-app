@@ -2,4 +2,5 @@
 <% if (!username) { %><a class="nav-link" href="/login">Login</a><% } %>
 <% if (username) { %><a class="nav-link" href="/logout">Logout</a><% } %>
 <a class="nav-link" href="/register">Register</a>
-<% if (username) { %><a class="nav-link" href=<%-`/user/${username}`%>>Profile</a> <% } %>
+<a class="nav-link" href="/users">All users</a>
+<% if (username) { %><a class="nav-link" href=<%-`/users/${username}`%>>Profile</a> <% } %>

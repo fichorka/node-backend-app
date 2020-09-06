@@ -64,7 +64,7 @@
     </style>
   </head>
   <body>
-    <% if (pageProps.username) { %><div class="profile-link">Logged in as <a href=<%-`/user/${pageProps.username}`%>><%- pageProps.username %></a></div>
+    <% if (pageProps.username) { %><div class="profile-link">Logged in as <a href=<%-`/users/${pageProps.username}`%>><%- pageProps.username %></a></div>
     <% } %> <%- include(page, pageProps) %>
   </body>
 </html>

@@ -7,6 +7,13 @@ import isPasswordValid from "../utils/isPasswordValid";
 
 const router = express.Router();
 
+router.get("/", async (req, res) => {
+  const allUsers = await req.app.locals.db.users
+    .find({}, { _id: 0, username: 1 })
+    .toArray();
+  res.render("layout", { page: "allUsersPartial", pageProps: { allUsers } });
+});
+
 router.get("/:username", async (req, res) => {
   setTimeout(function () {
     if (!res.headersSent) {
@@ -84,7 +91,7 @@ router.post("/:username/edit", async (req, res) => {
       }
     );
     req.session.user.username = user.username;
-    res.redirect(`/user/${newUsername}`);
+    res.redirect(`/users/${newUsername}`);
   } else if (
     newPassword &&
     isPasswordValid(newPassword) &&
@@ -99,7 +106,7 @@ router.post("/:username/edit", async (req, res) => {
       .catch((err) => {
         throw err;
       });
-    res.redirect(`/user/${username}`);
+    res.redirect(`/users/${username}`);
   } else {
     res.status(401).render("layout", {
       page: "messagePartial",
