@@ -5,6 +5,7 @@ import session from "express-session";
 
 import indexRouter from "./routes/indexRouter";
 import loginRouter from "./routes/loginRouter";
+import logoutRouter from "./routes/logoutRouter";
 import registerRouter from "./routes/registerRouter";
 import profileRouter from "./routes/profileRouter";
 import database from "./middleware/database";
@@ -32,9 +33,10 @@ app.set("views", "views");
 
 app.use("/", indexRouter);
 app.use("/login", loginRouter);
+app.use("/logout", logoutRouter);
 app.use("/register", registerRouter);
 app.use("/user/", profileRouter);
 
-app.listen(PORT, () => {
+app.listen(3001, () => {
   console.log(`Listening on http://localhost:${PORT}`);
 });

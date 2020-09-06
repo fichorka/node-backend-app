@@ -4,17 +4,13 @@ import authenticateUser from "../middleware/authenticateUser";
 const router = express.Router();
 
 router.use((req, res, next) => {
-  if (req.app.locals.user.username) res.redirect("/");
+  if (!req.app.locals.user.username) res.redirect("/");
   else next();
 });
 
 router.get("/", (req, res) => {
-  res.render("layout", {
-    page: "loginPartial",
-    pageProps: { username: req.app.locals.user.username },
-  });
+  req.session.destroy();
+  res.redirect("/");
 });
-
-router.post("/", authenticateUser);
 
 export default router;
