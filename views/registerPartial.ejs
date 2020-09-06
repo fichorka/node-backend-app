@@ -2,11 +2,25 @@
 <form method="POST" action="">
   <div class="interactive-block">
     <label for="username">Username</label
-    ><input class="interactive" type="text" name="username" id="username" />
+    ><input
+      class="interactive"
+      type="text"
+      name="username"
+      id="username"
+      required
+      minlength="5"
+    />
   </div>
   <div class="interactive-block">
     <label for="password">Password</label
-    ><input class="interactive" type="password" name="password" id="password" />
+    ><input
+      class="interactive"
+      type="password"
+      name="password"
+      id="password"
+      required
+      minlength="8"
+    />
   </div>
   <input class="interactive" type="submit" value="Submit" />
 </form>
