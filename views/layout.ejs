@@ -24,8 +24,10 @@
         text-decoration: none;
       }
       a {
-        display: block;
         color: blue;
+      }
+      a.nav-link {
+        display: block;
       }
       label {
         display: inline-block;
@@ -50,6 +52,7 @@
     </style>
   </head>
   <body>
-    <%- include(page, info) %>
+    <% if (pageProps.username) { %><div class="profile-link">Logged in as <a href=<%-`/user/${pageProps.username}`%>><%- pageProps.username %></a></div>
+    <% } %> <%- include(page, pageProps) %>
   </body>
 </html>
