@@ -73,7 +73,6 @@ router.post("/:username/edit", async (req, res) => {
   const { username } = req.params;
   const { username: newUsername, password: newPassword } = req.body;
 
-  console.log(newUsername);
   if (
     newUsername &&
     !(await findUser(req.app.locals.db.users, newUsername)) &&
@@ -97,7 +96,6 @@ router.post("/:username/edit", async (req, res) => {
     isPasswordValid(newPassword) &&
     username === req.app.locals.user.username
   ) {
-    console.log(newPassword);
     const hashedPassword = await bcrypt.hash(newPassword, 10).catch((err) => {
       throw err;
     });
@@ -111,7 +109,8 @@ router.post("/:username/edit", async (req, res) => {
     res.status(401).render("layout", {
       page: "messagePartial",
       pageProps: {
-        message: "Unauthorized.",
+        message:
+          "Unauthorized, or provided user info is invalid / already taken.",
       },
     });
   }

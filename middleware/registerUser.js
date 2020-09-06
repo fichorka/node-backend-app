@@ -26,7 +26,7 @@ export default async function registerUser(req, res, next) {
   if (!error && (await findUser(usersCollection, username))) {
     error = true;
     status = 400;
-    message = `Registration failed. Username ${username} is taken.`;
+    message = `Registration failed. Username ${username} is already taken.`;
   }
 
   // try registering

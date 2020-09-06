@@ -5,7 +5,6 @@ export default async function authenticateUser(req, res, next) {
   const { username, password } = req.body;
 
   const dbUser = await findUser(req.app.locals.db.users, username);
-  console.log(dbUser);
   if (dbUser && dbUser.username && dbUser.hashedPassword) {
     const isPasswordCorrect = await bcrypt.compare(
       password,
