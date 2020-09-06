@@ -32,20 +32,20 @@ export default async function registerUser(req, res, next) {
   // try registering
   if (!error) {
     const hashedPassword = await bcrypt.hash(password, 10);
-    usersCollection.insertOne({ username, hashedPassword }).catch((err) => {
-      res.status(500).render("layout", {
-        page: "messagePartial",
-        info: { message: "Registration failed, database error." },
+    await usersCollection
+      .insertOne({ username, hashedPassword })
+      .then((res) => {
+        status = 201;
+        message = `Registration Successfull. User ${username} created.`;
+      })
+      .catch((err) => {
+        status = 500;
+        message = "Registration failed, database error.";
       });
-      status = 500;
-      message = "Registration failed, database error.";
-    });
-    status = 201;
-    message = `Registration Successfull. User ${username} created.`;
   }
 
   res.status(status).render("layout", {
     page: "messagePartial",
-    info: { message },
+    pageProps: { message },
   });
 }
