@@ -11,41 +11,33 @@ export default async function registerUser(req, res, next) {
   let message = "";
 
   // validate
-  if (!username || !password) {
-    error = true;
-    status = 400;
-    message = "Registration failed, no data provided.";
+  if (!isUserRegistrationinfoValid(username, password)) {
+    req.app.locals.status = 400;
+    next(new Error("Registration failed, Invalid input."));
   }
 
-  if (!error && !isUserRegistrationinfoValid(username, password)) {
-    error = true;
-    status = 400;
-    message = "Registration failed, Invalid input.";
+  if (await findUser(usersCollection, username)) {
+    req.app.locals.status = 400;
+    next(
+      new Error(`Registration failed. Username ${username} is already taken.`)
+    );
   }
 
-  if (!error && (await findUser(usersCollection, username))) {
-    error = true;
-    status = 400;
-    message = `Registration failed. Username ${username} is already taken.`;
-  }
-
-  // try registering
-  if (!error) {
-    const hashedPassword = await bcrypt.hash(password, 10);
-    await usersCollection
-      .insertOne({ username, hashedPassword, dateCreated: Date() })
-      .then((res) => {
-        status = 201;
-        message = `Registration Successfull. User ${username} created.`;
-      })
-      .catch((err) => {
-        status = 500;
-        message = "Registration failed, database error.";
+  // register
+  const hashedPassword = await bcrypt.hash(password, 10);
+  await usersCollection
+    .insertOne({ username, hashedPassword, dateCreated: Date() })
+    .then((dbRes) => {
+      res.status(status).render("layout", {
+        page: "messagePartial",
+        pageProps: {
+          message: `Registration Successfull. User ${username} created.`,
+        },
       });
-  }
-
-  res.status(status).render("layout", {
-    page: "messagePartial",
-    pageProps: { message },
-  });
+    })
+    .catch((err) => {
+      console.log(err);
+      req.app.locals.status = 500;
+      next(new Error(`Registration failed, database error.`));
+    });
 }
