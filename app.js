@@ -13,7 +13,8 @@ import database from "./middleware/database";
 import authenticateUser from "./middleware/authenticateUser";
 import errorHandler from "./middleware/errorHandler";
 
-const { PORT } = process.env;
+// these environment variables shouldn't be publicily visible, but this is an example app with no sensitive information
+const { PORT, SESSION_SECRET } = process.env;
 
 const app = express();
 
@@ -26,7 +27,7 @@ app.use(database);
 app.use(express.urlencoded({ extended: false }));
 app.use(
   session({
-    secret: "scrt-key",
+    secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
