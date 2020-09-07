@@ -3,7 +3,7 @@
 
 Features user registration, password hashing, user login (authentication), cookie sessions, backend form validation and database storage. Includes all CRUD operations.
 
-Tech stack:
+## Tech stack:
 
 | *           | *        |
 | ----------- | -------- |
