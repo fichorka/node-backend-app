@@ -11,7 +11,10 @@ router.get("/", async (req, res) => {
   const allUsers = await req.app.locals.db.users
     .find({}, { _id: 0, username: 1 })
     .toArray();
-  res.render("layout", { page: "allUsersPartial", pageProps: { allUsers } });
+  res.render("layout", {
+    page: "allUsersPartial",
+    pageProps: { allUsers, username: req.session.username },
+  });
 });
 
 router.get("/:username", async (req, res) => {
