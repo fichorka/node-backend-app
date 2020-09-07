@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
+import helmet from "helmet";
 import session from "express-session";
 
 import indexRouter from "./routes/indexRouter";
@@ -28,8 +29,12 @@ app.use(
     secret: "scrt-key",
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+    },
   })
 );
+app.use(helmet());
 
 // routes
 app.use("/", indexRouter);
